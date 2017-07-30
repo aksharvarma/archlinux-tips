@@ -146,7 +146,9 @@ We do some basic things here. (These can't be executed, you need to read them an
 	ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 	# You can set to your time zone by replacing Asia/Kolkata with Region/City 
 	locale-gen #generate the locales
-
+	# to sync system time automatically usign NTP
+	sudo timedatectl set-ntp true # This should work at this stage, if not do at a later point.
+	
 #### Root password
 We need to set a root password. We are already using the system as root, hence simply typing `passwd` will bring you to a prompt allowing you to set your root password. This is **not** the password for _your account_. Another thing to note is that unlike many other linux distros, arch actually allows you to login using the root account. So you should keep something you'll remember so that you can login as root and repair any damages you may do later from your account using sudo.
 
@@ -223,9 +225,11 @@ We also add ourselves to the network administrators group: `sudo gpasswd -a USER
 At this point we are ready to test out whether the graphical aspects as well as the networking aspects work or not. It is advisable to test right now instead of waiting for installation of other applicaitons so that any errors can be addressed right away and installation work doesn't have to be repeated.
 
 ## Install remaining packages.
-Assuming that things work out, we can now proceed to install all the packages that we want.
+Assuming that things work out, we can now proceed to install all the packages that we want. At this point, the user will start to make choices regarding the particular packages they want installed. And those who are new, will start to see the amount of flexibility Arch provides in comparison to most other Linux distros.
 
-The details of this are in the script: `arch-pacman-install-helper.sh`. The script contains all the details of the packages that are being installed, categorized according to usage or type. The same is not being replicated here as the comments in the script suffice.
+There is a list of packages that the author uses/has used/knows about in the file `installable-package-list.txt`. These packages have been divided into sections based on what broad utility they serve and a short description of what it does is also mentioned alongside the package name. Users are expected to choose those packages that they wish to install after modifying this list according to their taste.
+
+There is no need to copy-paste the packages as arguments to a `pacman` command, most of that is automated using the script: `arch-pacman-install-helper.sh`. The script takes in two arguments, the first is a file containing a list of packages (divided into sections) and the second is a particular section name. It then parses the relevant section in the file to get a list that can directly be sent to pacman. The `installable-package-list.txt` file is considered as the default input file and you can pass "-" as the first argument and then pass the section as the second argument to avoid typing in the filename all the time. Changes to the choice of packages should be made directly to the `installable-package-list.txt` file so that there is an archive of packages installed. By default the script uses `sudo pacman -Sy --needed $PKGS` as the pacman command to be run. While this is a sane default to keep during installation the command can be changed by editing the script.
 
 ## Switching over to Arch's grub.
 

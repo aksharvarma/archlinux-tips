@@ -1,0 +1,294 @@
+# This file merely contains a list of packages, divided into sections. This file can be edited by adding/deleting/modifying packages (optionally with some descriptions). The section delimiters can also be changed according to taste (keeping the APIH_ in the starting as a convention might help later on).
+
+# This file serves as input to the functions in the 'arch-pacman-install-helper.sh' script. The functions there read this file, extract the relevant section and provide a list of packages that pacman can read and install.
+
+# Two things to note. Please keep the starting 'APIH_' as a convention. Also, please ensure that you use a # as the firts character of the line when commenting out packages, that helps in displaying chosen packages more clearly in the script.
+
+
+APIH_XORG_RELATED_START
+####### Xorg
+xorg-server			# This is the core X11 package
+xorg-apps			# Basic tools to go with X
+xf86-video-intel		# Video thingy (for intel processors)
+mesa-libgl			# opengl (for graphics stuff)
+wmctrl				# control windows from command line
+xdotool				# simulate keypress and mouse events
+xorg-xbacklight                 # to dim display in laptop
+# xclip                           # not needed
+# xsel                            # not needed
+# xorg-xfontsel                   # not needed
+# xorg-xmessage			  # to get xmessage
+APIH_XORG_RELATED_END
+
+APIH_DISPLAY_MANAGER_RELATED_START
+####### Display manager
+lightdm 			# Lightdm
+lightdm-gtk-greeter		# provides a GTK greeter for Lightdm
+# lxdm				  # lightweight X display manager
+APIH_DISPLAY_MANAGER_RELATED_END
+
+APIH_WINDOW_MANAGER_RELATED_START
+####### Window manager, lockers, screensaver etc
+openbox				# basic stacking window manager
+# awesome				# awesome wm (more tiling)
+tint2                           # system tray for icons not (needed in awesome wm)
+xfce4-notifyd                   # needed in openbox for notifications
+obconf                          # openbox configuration not really needed
+# archlinux-xdg-menu              # menu generator for openbox (not really necessary but can be helpful)
+oblogout			# menu for shutdown, hibernate etc
+slock                           # screen locker
+xautolock                       # auto lock screen using say slock
+# light-locker                    # lock screen requires lightdm
+# xscreensaver                    # replaced by slock and xautolock
+# workrave                        # rest breaks
+APIH_WINDOW_MANAGER_RELATED_END
+
+APIH_TERMINAL_MISC_START
+####### Terminals etc
+terminator			# A terminal emulator
+gmrun				# provides a run program dialog
+xorg-xmessage			# to get xmessage
+gnome-keyring                         # keyring for storing passwords etc
+# xterm				  # inferior alternative to terminator
+# lilyterm 			  # inferior alternative to terminator
+# gnome-icon-theme                      # not required. hicolor-icon-theme normally gets downloaded at some point.
+APIH_TERMINAL_MISC_END
+
+APIH_WIFI_RELATED_START
+####### Wifi etc
+# wpa_supplicant			# pulled in by NetworkManager and wpa_supplicant_gui 
+wpa_supplicant_gui                    # alternative to networkmanager
+networkmanager			      # manage network connections
+network-manager-applet                # gui for networkmanager (nm-applet is the command)
+APIH_WIFI_RELATED_END
+
+APIH_THINGS_TO_GET_AUR_PKGS_START
+####### yaourt etc. for AUR packages
+yaourt                                  # yaourt
+customizepkg                            # optional dependencies of yaourt
+rsync                                   # optional dependencies of yaourt
+APIH_THINGS_TO_GET_AUR_PKGS_END
+
+APIH_INTERNET_APPLICATIONS_START
+####### browsers, ftp, html, web servers etc.
+chromium                                # convenient browser
+firefox                                 # trusted browser
+midori					# Third, lightweight browser alternative
+filezilla                               # ftp 
+openssh                                 # ssh and public keys
+# lynx                                    # text based web browser. Nice to have a choice in case everything goes bust.
+# w3m                                     # text based web browser for emacs. Not necessarily needed.
+# xulrunner                             # required for conkeror
+# conkeror				# browser with emacs keybindings
+# tnef                                    # read Microsoft winmail.dat attachments
+# wkhtmltopdf                           # convert HTML into PDF (not essential). Most browsers handle this within themselves.
+# google-chrome                         # replaced by chromium. This was anyway a AUR thing.
+# mozplugger                              # (yaourt) firefox multimedia plugin. Not really necessary.
+# libxslt                               # no need to install explicitly
+# lighttpd                                # light weight web server. Not needed unless you want to run a web server
+APIH_INTERNET_APPLICATIONS_END
+
+APIH_SYS_TOOLS_START
+####### system tools
+# grub                                    # boot loader. Needed only when ready to shift properly to arch.
+linux-lts                               # LTS support kernel to replace linux
+# numlockx                                # to set numlock programmatically
+xdg-utils                               # for default apps when no desktop environment used
+perl-file-mimeinfo                      # for default apps when no desktop environment used
+pkgfile                                 # pacman utilities
+dos2unix                                # cr/lf conversion
+bash-completion                         # Self explanatory
+# rdesktop                                # remote desktop to windows server
+# freerdp                               # alternative tp rdesktop
+volumeicon                            # tray icon for volume control
+# volwheel                                # Alternative icon for volume control.
+pulseaudio-alsa                         # audio
+unetbootin                              # bootable usb sticks
+texinfo                                 # not needed?
+# moreutils                               # not needed.
+gparted                                 # partition editor
+# inxi                                    # not needed.
+# cups-pdf                                # not needed? virtual pdf printer for cups
+udisks2                                 # disk management 
+ntfs-3g                                 # to mount Windows NTFS partitions
+dosfstools
+cbatticon                               # battery icon only for laptop
+at                                      # run at jobs
+cronie                                  # run cron jobs
+# iotop                                   # system monitor for io
+# htop                                    # system monitor alternative to builtin top
+hdparm                                  # hard disk parameters. No need to install if you are planning to install tlp anyway. And perhaps no need if you aren't.
+# lm_sensors                            # hardware monitoring dependency of many (no need for explicit install. Comes via mesa opengl)
+gvfs-mtp                                # mount mobile phone using mtp
+gvfs-smb                                # mount samba shares 
+# arch-wiki-docs                          # offline access to Arch Wiki
+arch-wiki-lite                          # offline access to Arch Wiki
+# pmount-safe-removal                   # (yaourt) not needed?
+mlocate                                 # to locate files
+# mime-editor                             # edit mime applications. Hasn't come in handy as of now.
+gksu				# so that graphical applications can ask for sudo password. (Mainly for gparted)
+# rofi                                    # custom menu creater
+# extundelete                           # one time use to recover deleted files in ext file systems
+# foremost                              # one time use to recover deleted files in ext file systems
+# gobject-introspection                 # need not clear
+# impacket                              # need not clear
+# mtpfs                                 # mtp file system not needed with gvfs-mtp
+# pacmatic                              # pacman wrapper (not much used)
+# reflector                             # pacman mirror list (not needed when using date based archive mirrorlist)
+APIH_SYS_TOOLS_END
+
+APIH_VIRTUALIZATION_START
+# Virtualization packages. Mainly virtualbox.
+virtualbox                              # create and run virtual machines
+virtualbox-guest-iso                    # improves virtualbox
+net-tools                               # networking for virtualbox
+virtualbox-host-dkms                    # recompile kernal modules automatically
+linux-headers			# Use this if you are using linux
+linux-lts-headers                           # required for virtualbox-host-dkms. Use this if you are using linux-lts.
+# vagrant                                 # vagrant virtualization
+APIH_VIRTUALIZATION_END
+
+APIH_EDITORS_RELATED_START
+####### editors, speller, documents etc
+emacs                                   # my favourite editor
+# aspell                                  # spell check dependency of aspell-en. Would be depended as a dependency of aspell-en
+aspell-en                               # aspell english language
+libreoffice-fresh                       # Libre Office
+libreoffice-fresh-en-GB                 # English language
+libmspack                               # Microsoft compression formats
+libmythes                               # thesaurus for Libre Office
+libreoffice-extension-writer2latex      # export doc/odt to LaTeX 
+pandoc                                  # convert documents between many formats
+pandoc-citeproc                         # handle biblio in pandoc. Might as well install, since dependencies are similar to pandoc.
+markdown                                # the original perl implementation of markdown
+# dwdiff                                  # word level diff. Not necessary.
+# latex2rtf                               # latex to Word (RTF) conversion. Not necessary
+APIH_EDITORS_RELATED_END
+
+APIH_SCANNER_START
+####### scanner
+# sane                                    # main scanning library. Installed as a dependency of xsane.
+xsane                                   # sane front end
+simple-scan                             # sane front end
+# gscan2pdf                             # (yaourt) not needed
+# scantailor                            # repairs bad scans 
+APIH_SCANNER_END
+
+APIH_LIGHT_GUI_APPS_START
+####### file mananager, calendar, editor.
+thunar                                  # file manager
+orage                                   # calendar
+mousepad                                # text editor
+APIH_LIGHT_GUI_APPS_END
+
+APIH_PDF_UTILS_START
+####### pdf and other utilities
+# pdfjam                                # part of texlive
+evince                                  # pdf reader
+okular                                  # pdf reader
+calibre                                 # ebook reader
+# mupdf                                 # pdf reader
+APIH_PDF_UTILS_END
+
+APIH_PROG_HELPERS_START
+####### programming languages helpers, IDEs etc
+git                                     # git version control
+tk                                      # windowing toolkit required for R matplotlib etc
+# poppler                               # dependency of other packages
+sloccount			# Counts lines of source code
+bc				# precision calculator
+APIH_PROG_HELPERS_END
+
+APIH_PYTHON_START
+# Python and modules
+python                                  # python 3
+python-numpy                            # numpy for python 3
+python-scipy                            # scipy for python 3
+python-matplotlib                       # matplotlib for python 3
+python-pandas                           # pandas for python 3
+# python-pandas-datareader                # optional for python 3 pandas
+# pydb                                    # python debugger.
+# python-numexpr                          # optional for python 3 pandas
+# python-bottleneck                       # optional for python 3 pandas
+# python-pytables                         # optional for python 3 pandas
+# python-sqlalchemy                       # optional for python 3 pandas
+python-statsmodels                      # python 3 scipy statistical models
+# python-openpyxl                         # optional for python 3 pandas (excel)
+# python-xlrd                             # optional for python 3 pandas (excel)
+# python-xlwt                             # optional for python 3 pandas (excel)
+# python-xlsxwriter                       # optional for python 3 pandas (excel)
+# python-jinja                            # optional for python 3 pandas 
+# python-beautifulsoup4                   # web scraper etc for python 3
+# python-lxml                             # python 3 xml library for pandas & beautifulsoup4
+# python-html5lib                         # python 3 html5 library for pandas & beautifulsoup4
+python-pip                              # pip package installer for python 3
+# python2-pip                             # pip package installer for python 2
+# python-cairo                            # cairo graphics for python3
+# python-igraph                           # igraph library for python3
+# python-markdown                         # python 3 implementation of markdown
+# python-networkx                         # python 3 plot complex network graphs 
+# python-rpy2                             # run r from python 
+# python-secretstorage                    # store passwords in keyring
+# python-sphinx                           # python 3 source code documentation
+APIH_PYTHON_END
+
+APIH_JAVA_START
+## java
+jdk7-openjdk                            # java 7 openjdk
+jdk8-openjdk                            # java 8 openjdk
+icedtea-web                             # java browser plugin
+eclipse-java                            # eclipse IDE for java
+apache-ant                              # command line building of Java programs
+APIH_JAVA_END
+
+APIH_ENCRYPT_COMPRESS_START
+####### encryption, compression etc
+cryptsetup                              # dm-crypt tools
+keepass                                 # password safe (uses mono)
+# keepassx2                             # native x11 keepass still lacks some features
+p7zip                                   # 7z
+file-roller                             # handles zip and other common archives
+unrar                                   # rar archives
+unace                                   # ace archives
+lrzip                                   # lzma rzip (long range zip)
+# cdrkit                                # no such package
+libgnome-keyring                        # gnome key ring
+seahorse                                # front end to gnome key ring
+APIH_ENCRYPT_COMPRESS_END
+
+APIH_GRAPHICS_MEDIA_START
+####### graphics, media etc
+# espeak                                  # text to speech
+gimp                                    # image editing
+audacity                                # audio editing
+vlc                                     # media player
+mpv                                 	# media player
+pavucontrol                             # volume control
+gthumb                                  # image browser
+eog                                     # image viewer (eye of gnome)
+alsa-utils                              # audio tools
+pulseaudio-equalizer                    # audio tools
+volumeicon                            	# volume icon.
+# volwheel                              # alternate icon for volume control
+xfce4-screenshooter                     # take screenshots
+# ladspa                                # dependency of gst-plugins-bad
+# tesseract                               # Image to text (OCR)
+# tesseract-data-eng                      # tesseract English language data
+# tesseract-en                          # no such package
+# gimagereader                            # (yaourt) front end for tesseract
+# cdrtools                                # CD DVD burning etc
+# cheese                                  # webcam (useful for testing)
+APIH_GRAPHICS_MEDIA_END
+
+APIH_YAOURT_START
+# Yaourt packages
+bashmount			# CLI interface to udisks2
+cryptmount			# (yaourt) mount LUKS volumes easily
+fonts-meta-extended-lt		# For nice looking fonts.
+obkey				# For easily setting openbox keyboard shortcuts.
+pdftk-bin			# PDF editing/manipulation.
+skypeforlinux-bin		# Skype
+# gnome-screenruler		# screenruler
+# virtualbox-ext-oracle                   # (yaourt) Oracle VirtualBox Extension Pack
+# nuitka                                # python compiler (hard to use without anaconda)
+APIH_YAOURT_END
