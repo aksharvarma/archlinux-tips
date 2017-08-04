@@ -159,7 +159,18 @@ While Arch may allow logging in as the root account, you can also add your own u
 	passwd USERNAME
 	# in my case FULL-PATH-TO-NAME AND USERNAME are both simply akshar
 	# the -u 1000 uses a number taken from /etc/passwd of Ubuntu. This allows simply mapping the home of Ubuntu as the home of Arch.
-	
+
+##### You would also want to add yourself to the sudoers file.
+Add `EDITOR="nano"` (replace with your favorite editor) to `~/.bashrc` and then source that file by running `source ~/.bashrc`. Then use `sudo visudo /etc/sudoers.d/USERNAME` (replace `USERNAME` with your username) to insert the following lines. _Note: Always use visudo to edit the sudoers file otherwise you may lock yourself out._
+   
+    # nano /etc/sudoers.d/akshar # insert following lines
+
+    ##
+    ## User privilege specification
+    ##
+    akshar ALL=(ALL) ALL
+    Defaults env_keep += "http_proxy https_proxy ftp_proxy"
+
 #### Exiting to Ubuntu terminal
 At this moment, we are sitting inside the `arch-chroot`, which is inside a chroot environment on the arch partition made by `my-arch-chroot.sh` which is once again inside the first chroot environment on `root.x86_64` made by the first `my-arch-chroot.sh` call. (Inception <s>yet?</s> yes!)
 
@@ -216,6 +227,13 @@ If you choose a desktop environment (why would you in Arch?) you would not need 
   We need to enable this as well: `sudo systemctl enable NetworkManager.service`
    <!-- # pacman -Sy iw -->
 
+If you are starting this for the first time, you may need to run the following two commands
+  `sudo systemclt start wpa_supplicant.service`
+  `sudo systemclt start NetworkManager.service`
+
+To establish the connection the first time, you may need to use the network manger CLI.
+   `nmcli dev wifi connect H318 password d833303632`
+   
 We also add ourselves to the network administrators group: `sudo gpasswd -a USERNAME network`
 
 #### Misc
@@ -230,6 +248,125 @@ Assuming that things work out, we can now proceed to install all the packages th
 There is a list of packages that the author uses/has used/knows about in the file `installable-package-list.txt`. These packages have been divided into sections based on what broad utility they serve and a short description of what it does is also mentioned alongside the package name. Users are expected to choose those packages that they wish to install after modifying this list according to their taste.
 
 There is no need to copy-paste the packages as arguments to a `pacman` command, most of that is automated using the script: `arch-pacman-install-helper.sh`. The script takes in two arguments, the first is a file containing a list of packages (divided into sections) and the second is a particular section name. It then parses the relevant section in the file to get a list that can directly be sent to pacman. The `installable-package-list.txt` file is considered as the default input file and you can pass "-" as the first argument and then pass the section as the second argument to avoid typing in the filename all the time. Changes to the choice of packages should be made directly to the `installable-package-list.txt` file so that there is an archive of packages installed. By default the script uses `sudo pacman -Sy --needed $PKGS` as the pacman command to be run. While this is a sane default to keep during installation the command can be changed by editing the script.
+
+There will be a few things (mostly enabling relevant services) that will need to be done based on what you install and what you don't. The following points need to be kept in mind in case you install the relevant packages or want certain features.
+
+* If you have installed `slock`, then you'll need to start the slock@.service file as indicated on its wiki page. You should also add the couple of lines to `xorg.conf` as indicated in the `man slock` manual. If you are using this on a laptop, you may need to uncomment the `suspendlidswitch` line from `/etc/systemd/logind.conf` to ensure `slock` works when waking up from a suspend by opening the lid of the laptop.
+
+* You should enable the `cron` and `at` services.
+
+		sudo systemctl enable atd.service
+		sudo systemctl enable cronie
+
+* You should run the following command to automatically sync system time using NTP.
+		
+		sudo timedatectl set-ntp true
+
+### Openbox configuration
+Openbox is the window manager that is closest to the one that distros like Ubuntu provide. There is a bit of configuration that will need to be done to get it working. It is advisable to have `oblogout`, `obkey` and `obmenu-generator` (or some other menu generator) for first time users.
+
+In case you select some other window manager, you'll need to configure it yourself.
+
+#### Oblogout config
+Set things up for system shutdown like events (`oblogout` needs to be installed): `sudo nano /etc/oblogout.conf`
+
+	#######################################################
+	[settings]
+	usehal = false
+
+	[looks]
+	opacity = 70
+	bgcolor = black
+	buttontheme = oxygen
+	buttons = cancel, restart, shutdown, suspend, lock
+	# You can add other buttons as per your wish
+
+	[shortcuts]
+	# Set shortcuts as your taste. These are key shortcuts when the menu comes. You can also comment out some of these.
+	cancel = Escape
+	shutdown = S
+	restart = R
+	suspend = U
+	#logout = L
+	lock = L
+	#hibernate = H
+
+	[commands]
+	# You can choose which to allow and which not.
+	shutdown = systemctl poweroff
+	restart = systemctl reboot
+	suspend = systemctl suspend
+	#hibernate = systemctl hibernate
+	#logout = openbox --exit
+	lock = slock
+	#switchuser = gdm-control --switch-user
+	#safesuspend = safesuspend
+	#######################################################
+
+#### Menu config
+If you have `obmenu-generator` installed then replace entire `~/.config/openbox/menu.xml` with following lines:
+
+	################
+	<?xml version="1.0" encoding="utf-8"?>
+	<openbox_menu>
+		<menu id="root-menu" label="OpenBox 3" execute="/usr/bin/obmenu-generator">
+		</menu>
+	</openbox_menu>
+	################
+
+In case you are using another menu generator, replace the execute command with the relevant command.
+
+#### Autostart
+You need to edit the `~/.config/openbox/autostart` file to run certain commands on startup. You'll need to add some basic things like the system tray panel for icons, starting these icons,  starting the audio daemon, etc. You may have to add other things based on your requirements and packages you installed.
+
+	############################################
+    ## Set wallpaper to pure black
+    xsetroot -bg black
+	## minimal panel to provide system tray for various icons
+	tint2&
+	## networking icon
+	nm-applet&
+	## launch screensaver silently
+	xscreensaver -no-splash &
+	## lock desktop on hibernate by invoking the screensaver's lock function
+	xss-lock -- xscreensaver-command -lock &
+	## pulseaudio is more convenient than plain alsa for sound control (some Arch people do not like it)
+	## this starts the daemon to which we can send commands with pactl and paplay
+	pulseaudio --start &
+	## show a volume icon
+	volumeicon &
+	## launch the login script which does cryptmount, launches emacs etc
+	login-1 &
+	## uncomment this line in laptops for battery icon and auto hybernate on critical power
+	cbatticon -l 20 -r 10 -c "systemctl hibernate" &
+
+	## Set up the 3x3 grid of the desktops. This requires a small program called setlayout which is put in your bin folder. I am adding the program to the repo.
+	~/bin/setlayout 0 3 3 0
+	############################################
+
+The last command needs a 50 line C program that has been added to the repo. You'll need to compile it using the instructions in the code, basically run `gcc -o setlayout setlayout.c -lX11`.
+
+#### Keyboard shortcuts
+Adding keyboard shortcuts is something that each user must do on their own. The `obkey` provides a nice small interface by which these can be added. You can add shortcuts that directly open your browser, your file manager, etc.
+
+### Locatedb
+If you installed `mlocate` (you should), you should setup and populate that database using the following commands:
+
+	nano /etc/updatedb.conf # and remove /mnt from PRUNEPATHS
+	sudo updatedb # will take several minutes (can be done later also)
+
+### Nice looking fonts
+Arch Linux used to get nice fonts using a bundle of packages and fonts called the infinality bundle. Since that started causing bugs, a new mechanism has been setup to get nice fonts.
+
+After installing `freetype2`, `fontconfig`, and `cairo` using `pacman`, and `fonts-meta-extended-lt` from the AUR, run the following command to set up nice fonts.
+
+	sudo ln -s /etc/fonts/conf.avail/30-infinality-aliases.conf /etc/fonts/conf.d #This tells arch to use those fonts as defaults.
+
+### Python packages
+On many other distros, python modules need to be installed using pip. While that mechanism will also work in Arch, Arch also allows all official packages to be installed simply by using the packagename of `python-MODULENAME` for `pacman`. This can be seen in the list of installable packages.
+
+### Power management (particularly relevant for laptops)
+Please look at the file `power-management-tlp.md` for details of how to manage your power consumption using `tlp`.
 
 ## Switching over to Arch's grub.
 

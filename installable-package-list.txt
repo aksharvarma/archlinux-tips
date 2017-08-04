@@ -63,6 +63,13 @@ network-manager-applet                # gui for networkmanager (nm-applet is the
 APIH_WIFI_RELATED_END
 
 APIH_THINGS_TO_GET_AUR_PKGS_START
+# Make sure that you have done the following:
+nano /etc/pacman.conf # edit to add the custom repository for yaourt at the end. Uncomment the following lines from the pacman.conf file.
+# ############
+# [archlinuxfr]
+# SigLevel = Never
+# Server = http://repo.archlinux.fr/$arch
+# ############
 ####### yaourt etc. for AUR packages
 yaourt                                  # yaourt
 customizepkg                            # optional dependencies of yaourt
@@ -73,7 +80,7 @@ APIH_INTERNET_APPLICATIONS_START
 ####### browsers, ftp, html, web servers etc.
 chromium                                # convenient browser
 firefox                                 # trusted browser
-midori					# Third, lightweight browser alternative
+#midori					# Third, lightweight browser alternative
 filezilla                               # ftp 
 openssh                                 # ssh and public keys
 # lynx                                    # text based web browser. Nice to have a choice in case everything goes bust.
@@ -127,6 +134,7 @@ arch-wiki-lite                          # offline access to Arch Wiki
 mlocate                                 # to locate files
 # mime-editor                             # edit mime applications. Hasn't come in handy as of now.
 gksu				# so that graphical applications can ask for sudo password. (Mainly for gparted)
+tlp				#Controls power management. Useful for laptops and such.
 # rofi                                    # custom menu creater
 # extundelete                           # one time use to recover deleted files in ext file systems
 # foremost                              # one time use to recover deleted files in ext file systems
@@ -279,6 +287,14 @@ xfce4-screenshooter                     # take screenshots
 # cdrtools                                # CD DVD burning etc
 # cheese                                  # webcam (useful for testing)
 APIH_GRAPHICS_MEDIA_END
+
+APIH_FONTS_START
+# These handle fonts, render them and configure them, etc.
+# Needs to be followed by the fonts-meta-extended-lt meta package from the AUR.
+freetype2			# Font rasterization
+fontconfig			# Configuration
+cairo				# Vector graphics library
+APIH_FONTS_END
 
 APIH_YAOURT_START
 # Yaourt packages
