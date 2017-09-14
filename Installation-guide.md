@@ -262,6 +262,13 @@ There will be a few things (mostly enabling relevant services) that will need to
 		
 		sudo timedatectl set-ntp true
 
+* You should enable and start `org.cups.cupsd.service` in case you install CUPS. Also make sure that you (your user) has been added to the `lp` and `sys` groups.
+
+		sudo gpasswd --add USERNAME lp
+		sudo gpasswd --add USERNAME sys
+
+	Further, for HP printers, you may need to install hplip (if you haven't) and then find the ppd file for your printer model from /usr/share/ppd/HP. This would be needed while adding the printer using the CUPS interface.
+
 ### Openbox configuration
 Openbox is the window manager that is closest to the one that distros like Ubuntu provide. There is a bit of configuration that will need to be done to get it working (the same holds for most window managers). The configuration details that the author uses are provided in the `openbox-configuration.md` file, and they may be used as a starting point.
 

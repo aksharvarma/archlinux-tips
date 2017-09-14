@@ -122,6 +122,7 @@ dosfstools
 cbatticon                               # battery icon only for laptop
 at                                      # run at jobs
 cronie                                  # run cron jobs
+main 					# take screenshots
 # iotop                                   # system monitor for io
 # htop                                    # system monitor alternative to builtin top
 hdparm                                  # hard disk parameters. No need to install if you are planning to install tlp anyway. And perhaps no need if you aren't.
@@ -181,6 +182,11 @@ simple-scan                             # sane front end
 # gscan2pdf                             # (yaourt) not needed
 # scantailor                            # repairs bad scans 
 APIH_SCANNER_END
+
+APIH_PRINTER_START
+cups					# common unix printer interface
+hplip					# for PPD's for HP printers
+APIH_PRINTER_END
 
 APIH_LIGHT_GUI_APPS_START
 ####### file mananager, calendar, editor.
@@ -295,6 +301,13 @@ freetype2			# Font rasterization
 fontconfig			# Configuration
 cairo				# Vector graphics library
 APIH_FONTS_END
+
+APIH_EMAIL_START
+notmuch				# email program
+msmtp                           # SMTP
+offlineimap                     # IMAP email client
+python2-gnomekeyring            # for offlineimap to access key ring
+APIH_EMAIL_END
 
 APIH_YAOURT_START
 # Yaourt packages
