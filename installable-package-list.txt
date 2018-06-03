@@ -9,6 +9,7 @@ APIH_XORG_RELATED_START
 ####### Xorg
 xorg-server			# This is the core X11 package
 xorg-apps			# Basic tools to go with X
+arandr                          # GUI interface to xrandr.
 xf86-video-intel		# Video thingy (for intel processors)
 mesa-libgl			# opengl (for graphics stuff)
 wmctrl				# control windows from command line
@@ -123,6 +124,7 @@ cbatticon                               # battery icon only for laptop
 at                                      # run at jobs
 cronie                                  # run cron jobs
 main 					# take screenshots
+archey3                                 # prints basic system information and ASCII art of the Arch Linux logo.
 # iotop                                   # system monitor for io
 # htop                                    # system monitor alternative to builtin top
 hdparm                                  # hard disk parameters. No need to install if you are planning to install tlp anyway. And perhaps no need if you aren't.
@@ -199,6 +201,7 @@ APIH_PDF_UTILS_START
 ####### pdf and other utilities
 # pdfjam                                # part of texlive
 evince                                  # pdf reader
+gtk3-print-backends			# for evince to see printers
 okular                                  # pdf reader
 calibre                                 # ebook reader
 # mupdf                                 # pdf reader
@@ -278,8 +281,8 @@ audacity                                # audio editing
 vlc                                     # media player
 mpv                                 	# media player
 pavucontrol                             # volume control
-gthumb                                  # image browser
 eog                                     # image viewer (eye of gnome)
+# gthumb                                  # image browser (not a nice one)
 alsa-utils                              # audio tools
 pulseaudio-equalizer                    # audio tools
 volumeicon                            	# volume icon.
@@ -313,10 +316,14 @@ APIH_YAOURT_START
 # Yaourt packages
 bashmount			# CLI interface to udisks2
 cryptmount			# (yaourt) mount LUKS volumes easily
-fonts-meta-extended-lt		# For nice looking fonts.
+fonts-meta-extended-lt		# For nice looking fonts. (lite version)
+fonts-meta-extended		# Full version
+ttf-inconsolata-g               # improvement over inconsolata
+ttf-mononoki                    # seems good
 obkey				# For easily setting openbox keyboard shortcuts.
 pdftk-bin			# PDF editing/manipulation.
 skypeforlinux-bin		# Skype
+mons                            # POSIX compliant xrandr interface in bash
 # gnome-screenruler		# screenruler
 # virtualbox-ext-oracle                   # (yaourt) Oracle VirtualBox Extension Pack
 # nuitka                                # python compiler (hard to use without anaconda)
